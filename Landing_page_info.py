@@ -4,8 +4,6 @@ There are two objectives in this section:
 2) Server 4 will send the preliminary infos about the articles in each section
 '''
 
-
-import mysql.connector
 from dotenv import load_dotenv   
 load_dotenv()
 import os
@@ -52,7 +50,7 @@ def send_trending(recieved_art_ids):
 	return tot_res
 
 	#return tot_result which contains the info about 4 articles at a time in a list
-
+'''
 def recent_pub():
 	instruction="select article_id from date_filter order by write_date desc;"
 	mycursor.execute(instruction)
@@ -72,7 +70,7 @@ def send_recent():
 		result=mycursor.fetchone()
 		tot_res.append(result)
 	print(tot_res)		
-
+'''
 
 #Need to convert these into json and then send
 #send_trending(['abc456 2021-09-017 03:50:30'])

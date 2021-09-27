@@ -6,7 +6,7 @@ and handling the database connections.
 '''
 
 
-
+import json
 from fastapi import FastAPI
 from typing import  Optional
 from pydantic import BaseModel
@@ -59,29 +59,11 @@ async def article_unliked(article_id:str, user_id: str):
 	Article_Analytics_info.onunlike(article_id, user_id)
 	return "success"
 
-class Article(BaseModel):
-	title:str
-	body: str
-	auth_name: str
-	Auth_designation: str
-	write_date: str
-	domain: str
-	sub_domain: str
-	status: int
-	views:int
-	likes:int
-	image_count:int
-	image_link: Optional[str]
-	user_id:str
-	article_id:str
-	facebook_link:str
-	twitter_link:str
-	linkdin_link:str
 
-
-@app.post('/submit_unpublished_article')
-async def saving_unpub_article(article: Article):
-	Store_unpub_article.store_unpub(article)
+@app.get('/submit_unpublished_article')
+async def saving_unpub_article(article: str):
+	dic= json.loads(article)
+	Store_unpub_article.store_unpub(dic)
 	return "success"
 
 @app.post('/store approve articles')
@@ -105,7 +87,7 @@ async def filter_results(data: datafilter):
 	find=Filter_based_results.store(json_compatible_item_data)
 	return Filter_based_results.fetch(find)
 
-@app.post('/Suggestions')
+@app.get('/Suggestions')
 async def suggestions_results(article_id:str):
 	Sim_arts=Suggestions_and_sorting.similar_articles(article_id)
 	Sim_arts=Suggestions_and_sorting.sortarts(Sim_arts)

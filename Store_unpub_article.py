@@ -23,7 +23,7 @@ def store_unpub(json_obj):
      mycursor=mydb.cursor()
      
      instruction="insert into unpublished_articles (article_id, title, body,auth_name, Auth_designation, write_date, domain, subdomain, article_status,  views,likes,  user_id, facebook_link, twitter_link, linkedin_link, image_count, image_link) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-     data_sets=(json_obj.article_id,json_obj.title,json_obj.body,json_obj.auth_name,json_obj.Auth_designation,json_obj.write_date,json_obj.domain,json_obj.sub_domain,json_obj.status,json_obj.views,json_obj.likes,json_obj.user_id,json_obj.facebook_link,json_obj.twitter_link,json_obj.linkdin_link,json_obj.image_count,json_obj.image_link)
+     data_sets=(json_obj["article_id"],json_obj["title"],json_obj["body"],json_obj["auth_name"],json_obj["Auth_designation"],json_obj["write_date"],json_obj["domain"],json_obj["sub_domain"],json_obj["status"],json_obj["views"],json_obj["likes"],json_obj["user_id"],json_obj["facebook_link"],json_obj["twitter_link"],json_obj["linkedin_link"],json_obj["image_count"],json_obj["image_link"])
      mycursor.execute(instruction,data_sets)
      mydb.commit()
 

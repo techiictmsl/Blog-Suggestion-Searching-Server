@@ -37,9 +37,24 @@ def onread(article_id,user_id):
      mycursor.execute(instruction,data)
      mydb.commit()
 
+
+     instruction="select * from iicblogdatabase.user_history where user_id =%s and article_id = %s"
+     data=(user_id,article_id)
+     mycursor.execute(instruction,data)
+     result=mycursor.fetchone()
+     if result==None:
+          k=1
+     else:
+          k=2
+
      m=datetime.now()
-     instruction="insert into iicblogdatabase.user_history (article_id, user_id, like_status,date) values (%s,%s,%s,%s)"
-     data=(article_id,user_id,0,m)
+     if k==1:
+          instruction="insert into iicblogdatabase.user_history (article_id, user_id, like_status,date) values (%s,%s,%s,%s)"
+          data=(article_id,user_id,0,m)
+     elif k==2:
+          instruction="update iicblogdatabase.user_history set date = %s where user_id=%s and article_id=%s"
+          data=(m,user_id,article_id)
+
      mycursor.execute(instruction,data)
      mydb.commit()
 
@@ -77,4 +92,5 @@ def onunlike(article_id,user_id):
      mydb.commit()
 
      mydb.close()
+
 
