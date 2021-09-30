@@ -8,7 +8,7 @@ and handling the database connections.
 
 import json
 from fastapi import FastAPI
-from typing import  Optional
+from typing import  List, Optional
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -31,10 +31,16 @@ async def send_all_article_ids():
 	res=[]
 	for i in result:
 		res.append(i["article_id"])
-	return res
+	result={}
+	result["article_ids"]=res
+	return result
+
+class Info(BaseModel):
+	article_ids: List
 
 @app.post('/send_details')
-async def send_info_of_article_ids(recieved_art_ids: list):
+async def send_info_of_article_ids(info:Info):
+	recieved_art_ids=info.article_ids
 	result=Landing_page_info.send_trending(recieved_art_ids)
 	res={}
 	for i in result:
@@ -44,19 +50,23 @@ async def send_info_of_article_ids(recieved_art_ids: list):
 	json_compatible_item_data = jsonable_encoder(res)
 	return JSONResponse(content=json_compatible_item_data)
 
+class Item(BaseModel):
+	user_id: str
+	article_id: str
+
 @app.post('/reading')
-async def article_reading(article_id:str, user_id: str):
-	Article_Analytics_info.onread(article_id,user_id)
+async def article_reading(item:Item):
+	Article_Analytics_info.onread(item.article_id,item.user_id)
 	return "success"
 
 @app.post('/liking')
-async def article_liking(article_id:str, user_id: str):
-	Article_Analytics_info.onlike(article_id, user_id)
+async def article_liking(item:Item):
+	Article_Analytics_info.onlike(item.article_id,item.user_id)
 	return "success"
 
 @app.post('/unlike')
-async def article_unliked(article_id:str, user_id: str):
-	Article_Analytics_info.onunlike(article_id, user_id)
+async def article_unliked(item:Item):
+	Article_Analytics_info.onunlike(item.article_id,item.user_id)
 	return "success"
 
 
