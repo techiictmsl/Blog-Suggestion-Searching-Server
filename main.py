@@ -12,7 +12,7 @@ from typing import  List, Optional
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-
+from fastapi.middleware.cors import CORSMiddleware
 
 import Landing_page_info
 import Article_Analytics_info
@@ -23,6 +23,14 @@ import Suggestions_and_sorting
 
 
 app=FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get('/landing_page')
